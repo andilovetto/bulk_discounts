@@ -7,13 +7,6 @@ class UnsplashService
     JSON.parse(response.body, symbolize_names: true)
   end
 
-  def self.find_likes
-    response = conn('/photos/kOGDVpRl3RE').get do |faraday|
-      faraday.params['client_id'] = "kpMMx2904Yk5kq69M6reYJQP1xkiTIaVegKTk1ojh8g"
-    end
-    JSON.parse(response.body, symbolize_names: true)["likes"]
-  end
-
   def self.find_item_image(item_name)
     response = conn("/search/photos").get do |faraday|
       faraday.params['client_id'] = "kpMMx2904Yk5kq69M6reYJQP1xkiTIaVegKTk1ojh8g" #UNSPLASH_ACCESS_KEY stored as env variable in figaro generated yml file
