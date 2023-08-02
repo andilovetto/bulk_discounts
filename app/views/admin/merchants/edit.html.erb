@@ -1,3 +1,5 @@
+<%= render partial: "shared/admin_header" %><br>
+
 <%= form_with model: [:admin, @merchant], local: true do |f| %>
   <%= f.label :name %>
   <%= f.text_field :name, value: @merchant.name %><br>
