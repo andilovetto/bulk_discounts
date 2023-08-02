@@ -1,4 +1,6 @@
 class UnsplashService
+  UNSPLASH_ACCESS_KEY =  # Unsplash API Key
+
 
   def self.find_logo
     response = conn('/photos/kOGDVpRl3RE').get do |faraday|
@@ -21,4 +23,22 @@ class UnsplashService
     url = "https://api.unsplash.com#{endpoint_url}"
     Faraday.new(url: url)
   end
+
+  def self.find_random_photo
+    conn = Faraday.new(url: 'https://api.unsplash.com') do |faraday|
+      faraday.headers['Authorization'] = "Client-ID #{"kpMMx2904Yk5kq69M6reYJQP1xkiTIaVegKTk1ojh8g"}"
+      faraday.adapter Faraday.default_adapter
+    end
+
+    response = conn.get('/photos/random')
+
+    # if response.status == 200
+      photo_data = JSON.parse(response.body)
+      photo_url = photo_data['urls']['regular']
+      return photo_url
+    # else
+    #   return nil
+    # end
+  end
+
 end

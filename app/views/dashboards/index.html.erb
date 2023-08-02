@@ -1,6 +1,7 @@
 <%= render partial: "shared/merchant_header" %><br>
 
 <p><%= @merchant.name %></p>
+<%= image_tag @merchant_image, alt: "Merchant Image", style: "width: 10%;" %>
 
 <div id="items-divider">
   <li><%= link_to "My Items", merchant_items_path %></li>
