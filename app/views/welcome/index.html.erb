@@ -1,0 +1,31 @@
+<!-- app/views/articles/index.html.erb -->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Little Shop 7</title>
+</head>
+<body>
+  <p>
+    Welcome to 'Little Shop 7'! Click the links below to view merchants, items, or invoice details!
+  </p>
+  
+  <p>
+    Merchants:
+    </p>
+   <% @merchants.each do |merchant| %>
+    <div <%= merchant.id %>>
+      <%= link_to merchant.name, merchant_dashboards_path(merchant) %>
+  <% end %>
+  
+  
+  <p>
+    If you are an admin, click <a href="/admin/dashboard">here</a> for the admin site.
+  </p>
+  
+  <ul>
+    <li><a href="/admin/invoices/:admin_invoice_id">Admin Invoices</a></li>
+    <li><a href="/admin/merchants/:admin_merchant_id">Admin Merchants</a></li>
+  </ul>
+</body>
+</html>
