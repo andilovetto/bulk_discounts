@@ -112,7 +112,7 @@ RSpec.describe Item, type: :model do
       FactoryBot.create(:transaction, invoice: invoice5, result: 0)
 
       expected_result = item_1.most_sales_date
-      expected_date = Date.today + 1
+      expected_date = Date.today
 
       expect(expected_result).to eq(invoice1.created_at)
       expect(expected_result.to_date).to eq(expected_date)

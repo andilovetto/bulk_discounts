@@ -17,7 +17,7 @@ class Merchant < ApplicationRecord
       .group('full_name')
       .order('transaction_count DESC')
       .limit(5)
-      .to_a
+      # .to_a
   end
 
   def ready_to_ship

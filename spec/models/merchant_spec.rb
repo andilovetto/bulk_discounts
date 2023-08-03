@@ -39,7 +39,7 @@ RSpec.describe Merchant, type: :model do
 
     describe "#top_5_customers" do
       it "can list the merchant's top 5 customers" do
-        expect(@merchant_1.top_5_customers.count).to eq(5)
+        expect(@merchant_1.top_5_customers.length).to eq(5)
       end
     end 
 
