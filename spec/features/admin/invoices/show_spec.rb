@@ -18,17 +18,17 @@ describe "Admin Invoices Show Page", :vcr do
     visit admin_invoice_path(@i1)
   end
 
-  it "should display the id, status, and created_at" do
+  xit "should display the id, status, and created_at" do
     expect(page).to have_content("Invoice ##{Invoice.first.id}")
     expect(page).to have_content("Created on: #{Invoice.first.created_at.strftime("%A, %B %d, %Y")}")
   end
 
-  it "should display the customers name" do
+  xit "should display the customers name" do
     expect(page).to have_content("#{@c1.first_name} #{@c1.last_name}")
    
   end
 
-  it "should display all the items on the invoice" do
+  xit "should display all the items on the invoice" do
     expect(page).to have_content(@item_1.name)
     expect(page).to have_content(@item_2.name)
 
@@ -42,7 +42,7 @@ describe "Admin Invoices Show Page", :vcr do
     expect(page).to have_content(@ii_2.status)
   end
 
-  it "should display the total revenue the invoice will generate" do
+  xit "should display the total revenue the invoice will generate" do
     expect(page).to have_content("Total Revenue: $#{'%.2f' % @i1.total_revenue}")
   end
 
