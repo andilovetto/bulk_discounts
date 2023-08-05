@@ -42,7 +42,5 @@ RSpec.describe "merchant's bulk discount index" do
     expect(page).to have_link(@bulk_discount_1.threshold)
     click_link @bulk_discount_1.threshold
     expect(current_path).to eq(merchant_bulk_discount_path(@merchant_1, @bulk_discount_1))
-    # expect(page).to have_link merchant_bulk_discount_path(@merchant_1, @bulk_discount_3)
-    # expect(page).to_not have_link merchant_bulk_discount_path(@merchant_2, @bulk_discount_4)
   end
 end
