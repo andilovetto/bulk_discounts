@@ -97,5 +97,14 @@ RSpec.describe "merchant dashboards index", :vcr do
         expect(page).to have_content(invoice.format_created_at)
       end
     end
+
+    describe "bulk discounts" do
+      it "has a link to view all merchant discounts" do
+        visit merchant_dashboards_path(@merchant_1)
+        expect(page).to have_link("Discounts")
+        click_link "Discounts"
+        expect(current_path).to eq(merchant_bulk_discounts_path(@merchant_1))
+      end
+    end
   end
 end
