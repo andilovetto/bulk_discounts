@@ -43,4 +43,10 @@ RSpec.describe "merchant's bulk discount index" do
     click_link @bulk_discount_1.threshold
     expect(current_path).to eq(merchant_bulk_discount_path(@merchant_1, @bulk_discount_1))
   end
+
+  it "has a link to create a new discount" do
+    expect(page).to have_link("New Discount")
+    click_link "New Discount"
+    expect(current_path).to eq(new_merchant_bulk_discount_path(@merchant_1))
+  end
 end
