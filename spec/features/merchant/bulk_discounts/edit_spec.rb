@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe "merchant's bulk discount show page" do
+RSpec.describe "merchant's bulk discount edit page" do
   before(:each) do
     @merchant_1 = Merchant.create!(name: "Schroeder-Jerde", status: nil)
     @merchant_2 = Merchant.create!(name: "bob the drag queen", status: nil)
@@ -27,20 +27,17 @@ RSpec.describe "merchant's bulk discount show page" do
     @bulk_discount_3 = @merchant_1.bulk_discounts.create!(percentage: 30, threshold: 15)
     @bulk_discount_4 = @merchant_2.bulk_discounts.create!(percentage: 70, threshold: 2)
 
-    visit merchant_bulk_discount_path(@merchant_1, @bulk_discount_1)
+    visit edit_merchant_bulk_discount_path(@merchant_1, @bulk_discount_1)
 
   end
-  
-  it "displays a bulk discount's quantity threshold and percentage discount" do
-    expect(page).to have_content(@bulk_discount_1.percentage)
-    expect(page).to have_content(@bulk_discount_1.threshold)
-    expect(page).to_not have_content(@bulk_discount_3.percentage)
-    expect(page).to_not have_content(@bulk_discount_3.threshold)
+
+  it "provides a form that autopopulates discount info for editing" do
+    expect(page).to have_field("Percentage", with: "20")
+    expect(page).to_not have_content("30")
+    fill_in "Percentage", with: "25"
+    click_button "Update Bulk discount"
+    expect(current_path).to eq(merchant_bulk_discount_path(@merchant_1, @bulk_discount_1))
+    expect(page).to have_content("25%")
   end
 
-  it "has a link to edit a bulk discount" do
-    expect(page).to have_button("Edit")
-    click_button "Edit"
-    expect(current_path).to eq(edit_merchant_bulk_discount_path(@merchant_1, @bulk_discount_1))
-  end
 end
