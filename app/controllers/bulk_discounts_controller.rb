@@ -1,11 +1,13 @@
 class BulkDiscountsController < ApplicationController
   before_action :find_merchant
+  before_action :find_discount, only: [:show, :destroy, :edit, :update]
+
+
   
   def index
   end
 
   def show
-    @bulk_discount = BulkDiscount.find(params[:id])
   end
 
   def new
@@ -21,15 +23,29 @@ class BulkDiscountsController < ApplicationController
   end
 
   def destroy
-    #three steps to complete this task, what are they?
-    bulk_discount_delete = BulkDiscount.find(params[:id])
-    bulk_discount_delete.destroy
+    @bulk_discount.destroy
     redirect_to merchant_bulk_discounts_path(@merchant)
+  end
+
+  def edit
+  end
+
+  def update
+    @bulk_discount.update(discount_params)
+    redirect_to merchant_bulk_discount_path(@merchant, @bulk_discount)
   end
 
   private
   
   def find_merchant
     @merchant = Merchant.find(params[:merchant_id])
+  end
+
+  def find_discount
+    @bulk_discount = BulkDiscount.find(params[:id])
+  end
+
+  def discount_params
+    params.require(:bulk_discount).permit(:threshold, :percentage)
   end
 end
