@@ -6,7 +6,11 @@ RSpec.describe "merchant invoice show page", :vcr do
     @customer = FactoryBot.create(:customer)
     @invoice = FactoryBot.create(:invoice, customer: @customer)
     @item = FactoryBot.create(:item, merchant: @merchant)
-    @invoice_item = FactoryBot.create(:invoice_item, item: @item, invoice: @invoice, status: "packaged")
+    @item_3 = FactoryBot.create(:item, merchant: @merchant)
+    @invoice_item = FactoryBot.create(:invoice_item, item: @item, invoice: @invoice, status: "packaged", quantity: 10, unit_price: 10)
+    @invoice_item_3 = FactoryBot.create(:invoice_item, item: @item_3, invoice: @invoice, status: "packaged", quantity: 8, unit_price: 10)
+    @bulk_discount_1 = @merchant.bulk_discounts.create!(percentage: 20, threshold: 10)
+
 
     @merchant_2 = FactoryBot.create(:merchant)
     @customer_2 = FactoryBot.create(:customer)
@@ -77,6 +81,101 @@ RSpec.describe "merchant invoice show page", :vcr do
           expect(current_path).to eq(merchant_invoice_path(@merchant, @invoice))
         end
       end
+
+      it "displays total revenue for a merchant with bulk discount applied" do
+        visit merchant_invoice_path(@merchant, @invoice)
+
+        expect(page).to have_content("Total Revenue: 180")
+        expect(page).to have_content("Total Discounted Revenue: 160")
+      end
+
+      it "passes example 1" do
+        merchant = FactoryBot.create(:merchant)
+        customer = FactoryBot.create(:customer)
+        invoice = FactoryBot.create(:invoice, customer: customer)
+        item = FactoryBot.create(:item, merchant: merchant)
+        item_3 = FactoryBot.create(:item, merchant: merchant)
+        invoice_item = FactoryBot.create(:invoice_item, item: item, invoice: invoice, status: "packaged", quantity: 5, unit_price: 10)
+        invoice_item_3 = FactoryBot.create(:invoice_item, item: item_3, invoice: invoice, status: "packaged", quantity: 5, unit_price: 10)
+        bulk_discount_1 = merchant.bulk_discounts.create!(percentage: 20, threshold: 10)
+
+        visit merchant_invoice_path(merchant, invoice)
+
+        expect(page).to have_content("Total Revenue: 100")
+        expect(page).to have_content("Total Discounted Revenue: 100")
+      end
+
+      it "passes example 2" do
+        merchant = FactoryBot.create(:merchant)
+        customer = FactoryBot.create(:customer)
+        invoice = FactoryBot.create(:invoice, customer: customer)
+        item = FactoryBot.create(:item, merchant: merchant)
+        item_3 = FactoryBot.create(:item, merchant: merchant)
+        invoice_item = FactoryBot.create(:invoice_item, item: item, invoice: invoice, status: "packaged", quantity: 10, unit_price: 10)
+        invoice_item_3 = FactoryBot.create(:invoice_item, item: item_3, invoice: invoice, status: "packaged", quantity: 5, unit_price: 10)
+        bulk_discount_1 = merchant.bulk_discounts.create!(percentage: 20, threshold: 10)
+
+        visit merchant_invoice_path(merchant, invoice)
+
+        expect(page).to have_content("Total Revenue: 150")
+        expect(page).to have_content("Total Discounted Revenue: 130")
+      end
+
+      it "passes example 3" do
+        merchant_10 = Merchant.create!(name: "andi")
+        customer = FactoryBot.create(:customer)
+        invoice = FactoryBot.create(:invoice, customer: customer)
+        item = FactoryBot.create(:item, merchant: merchant_10)
+        item_3 = FactoryBot.create(:item, merchant: merchant_10)
+        invoice_item = FactoryBot.create(:invoice_item, item: item, invoice: invoice, status: "packaged", quantity: 12, unit_price: 10)
+        invoice_item_3 = FactoryBot.create(:invoice_item, item: item_3, invoice: invoice, status: "packaged", quantity: 15, unit_price: 10)
+        bulk_discount_1 = merchant_10.bulk_discounts.create!(percentage: 20, threshold: 10)
+        bulk_discount_2 = merchant_10.bulk_discounts.create!(percentage: 30, threshold: 15)
+
+        visit merchant_invoice_path(merchant_10, invoice)
+
+        expect(page).to have_content("Total Revenue: 270")
+        expect(page).to have_content("Total Discounted Revenue: 201")
+      end
+
+      it "passes example 4" do
+        merchant_10 = Merchant.create!(name: "andi")
+        customer = FactoryBot.create(:customer)
+        invoice = FactoryBot.create(:invoice, customer: customer)
+        item = FactoryBot.create(:item, merchant: merchant_10)
+        item_3 = FactoryBot.create(:item, merchant: merchant_10)
+        invoice_item = FactoryBot.create(:invoice_item, item: item, invoice: invoice, status: "packaged", quantity: 12, unit_price: 10)
+        invoice_item_3 = FactoryBot.create(:invoice_item, item: item_3, invoice: invoice, status: "packaged", quantity: 15, unit_price: 10)
+        bulk_discount_1 = merchant_10.bulk_discounts.create!(percentage: 20, threshold: 10)
+        bulk_discount_2 = merchant_10.bulk_discounts.create!(percentage: 15, threshold: 15)
+
+        visit merchant_invoice_path(merchant_10, invoice)
+
+        expect(page).to have_content("Total Revenue: 270")
+        expect(page).to have_content("Total Discounted Revenue: 216")
+
+      end
+
+      it "passes example 5" do
+        merchant_10 = Merchant.create!(name: "andi")
+        merchant_11 = Merchant.create!(name: "seth")
+        customer = FactoryBot.create(:customer)
+        invoice = FactoryBot.create(:invoice, customer: customer)
+        item = FactoryBot.create(:item, merchant: merchant_10)
+        item_3 = FactoryBot.create(:item, merchant: merchant_10)
+        item_13 = FactoryBot.create(:item, merchant: merchant_11)
+        invoice_item = FactoryBot.create(:invoice_item, item: item, invoice: invoice, status: "packaged", quantity: 12, unit_price: 10)
+        invoice_item_3 = FactoryBot.create(:invoice_item, item: item_3, invoice: invoice, status: "packaged", quantity: 15, unit_price: 10)
+        invoice_item_13 = FactoryBot.create(:invoice_item, item: item_13, invoice: invoice, status: "packaged", quantity: 15, unit_price: 10)
+        bulk_discount_1 = merchant_10.bulk_discounts.create!(percentage: 20, threshold: 10)
+        bulk_discount_2 = merchant_10.bulk_discounts.create!(percentage: 30, threshold: 15)
+
+        visit merchant_invoice_path(merchant_10, invoice)
+
+        expect(page).to have_content("Total Revenue: 420")
+        expect(page).to have_content("Total Discounted Revenue: 351")
+      end
+
     end
   end
 end
