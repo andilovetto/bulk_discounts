@@ -21,6 +21,8 @@
     <p>Status: <%= invoice_item.status %>
   <% end %>
 
-  <p>Total Revenue: <%= @invoice.total_revenue %>
+  <p>Total Revenue: <%= number_to_currency(@invoice.total_revenue) %>
+  <p>Total Discounted Revenue: <%= number_to_currency(@invoice.total_revenue - @invoice.discounted_revenue) %>
+
     
 

@@ -49,5 +49,21 @@ RSpec.describe Invoice, type: :model do
         expect(invoice.total_revenue).to eq(2400)
       end
     end
+
+    describe "#discounted_revenue" do
+      it "can calculate discount given to invoice items" do
+        merchant_10 = Merchant.create!(name: "andi")
+        customer = FactoryBot.create(:customer)
+        invoice = FactoryBot.create(:invoice, customer: customer)
+        item = FactoryBot.create(:item, merchant: merchant_10)
+        item_3 = FactoryBot.create(:item, merchant: merchant_10)
+        invoice_item = FactoryBot.create(:invoice_item, item: item, invoice: invoice, status: "packaged", quantity: 12, unit_price: 10)
+        invoice_item_3 = FactoryBot.create(:invoice_item, item: item_3, invoice: invoice, status: "packaged", quantity: 15, unit_price: 10)
+        bulk_discount_1 = merchant_10.bulk_discounts.create!(percentage: 20, threshold: 10)
+        bulk_discount_2 = merchant_10.bulk_discounts.create!(percentage: 30, threshold: 15)
+
+        expect(invoice.discounted_revenue).to eq(69.0)
+      end
+    end
   end
 end
