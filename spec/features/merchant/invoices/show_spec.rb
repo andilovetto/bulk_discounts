@@ -85,8 +85,8 @@ RSpec.describe "merchant invoice show page", :vcr do
       it "displays total revenue for a merchant with bulk discount applied" do
         visit merchant_invoice_path(@merchant, @invoice)
 
-        expect(page).to have_content("Total Revenue: 180")
-        expect(page).to have_content("Total Discounted Revenue: 160")
+        expect(page).to have_content("Total Revenue: $180.00")
+        expect(page).to have_content("Total Discounted Revenue: $160.00")
       end
 
       it "passes example 1" do
@@ -101,8 +101,8 @@ RSpec.describe "merchant invoice show page", :vcr do
 
         visit merchant_invoice_path(merchant, invoice)
 
-        expect(page).to have_content("Total Revenue: 100")
-        expect(page).to have_content("Total Discounted Revenue: 100")
+        expect(page).to have_content("Total Revenue: $100.00")
+        expect(page).to have_content("Total Discounted Revenue: $100.00")
       end
 
       it "passes example 2" do
@@ -117,8 +117,8 @@ RSpec.describe "merchant invoice show page", :vcr do
 
         visit merchant_invoice_path(merchant, invoice)
 
-        expect(page).to have_content("Total Revenue: 150")
-        expect(page).to have_content("Total Discounted Revenue: 130")
+        expect(page).to have_content("Total Revenue: $150.00")
+        expect(page).to have_content("Total Discounted Revenue: $130.00")
       end
 
       it "passes example 3" do
@@ -134,8 +134,8 @@ RSpec.describe "merchant invoice show page", :vcr do
 
         visit merchant_invoice_path(merchant_10, invoice)
 
-        expect(page).to have_content("Total Revenue: 270")
-        expect(page).to have_content("Total Discounted Revenue: 201")
+        expect(page).to have_content("Total Revenue: $270.00")
+        expect(page).to have_content("Total Discounted Revenue: $201.00")
       end
 
       it "passes example 4" do
@@ -151,8 +151,8 @@ RSpec.describe "merchant invoice show page", :vcr do
 
         visit merchant_invoice_path(merchant_10, invoice)
 
-        expect(page).to have_content("Total Revenue: 270")
-        expect(page).to have_content("Total Discounted Revenue: 216")
+        expect(page).to have_content("Total Revenue: $270.00")
+        expect(page).to have_content("Total Discounted Revenue: $216.00")
 
       end
 
@@ -172,8 +172,8 @@ RSpec.describe "merchant invoice show page", :vcr do
 
         visit merchant_invoice_path(merchant_10, invoice)
 
-        expect(page).to have_content("Total Revenue: 420")
-        expect(page).to have_content("Total Discounted Revenue: 351")
+        expect(page).to have_content("Total Revenue: $420.00")
+        expect(page).to have_content("Total Discounted Revenue: $351.00")
       end
 
     end

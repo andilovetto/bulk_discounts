@@ -5,8 +5,9 @@ class InvoiceItem < ApplicationRecord
   :unit_price,
   :status
 
-belongs_to :invoice
-belongs_to :item
+  belongs_to :invoice
+  belongs_to :item
+  has_many :bulk_discounts, through: :item
 
   validates :quantity, presence: true, numericality: true
   validates :unit_price, presence: true, numericality: true
@@ -30,5 +31,9 @@ def self.incomplete_invoices
     cents = unit_price_in_cents % 100
     sprintf("$%d.%02d", dollars, cents)
   end  
+
+  # def discount_available
+  #   bulk_discounts.where("bulk_discounts.threshold <= ?", quantity).order(percentage: :desc).first
+  # end
 end
   
