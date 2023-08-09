@@ -55,4 +55,26 @@ describe "Admin Invoices Show Page", :vcr do
       expect(Invoice.first.status).to eq("cancelled")
     end
   end
+  
+  it "displays total discounted revenue" do
+    merchant_10 = Merchant.create!(name: "andi")
+    merchant_11 = Merchant.create!(name: "seth")
+    customer = FactoryBot.create(:customer)
+    invoice = FactoryBot.create(:invoice, customer: customer)
+    item = FactoryBot.create(:item, merchant: merchant_10)
+    item_3 = FactoryBot.create(:item, merchant: merchant_10)
+    item_13 = FactoryBot.create(:item, merchant: merchant_11)
+    invoice_item = FactoryBot.create(:invoice_item, item: item, invoice: invoice, status: "packaged", quantity: 12, unit_price: 10)
+    invoice_item_3 = FactoryBot.create(:invoice_item, item: item_3, invoice: invoice, status: "packaged", quantity: 15, unit_price: 10)
+    invoice_item_13 = FactoryBot.create(:invoice_item, item: item_13, invoice: invoice, status: "packaged", quantity: 15, unit_price: 10)
+    bulk_discount_1 = merchant_10.bulk_discounts.create!(percentage: 20, threshold: 10)
+    bulk_discount_2 = merchant_10.bulk_discounts.create!(percentage: 30, threshold: 15)
+
+    visit admin_invoice_path(invoice)
+    
+    within(".revenue") do
+      expect(page).to have_content("Total Revenue: $420.00")
+      expect(page).to have_content("Total Discounted Revenue: $351.00")
+    end
+  end
 end
