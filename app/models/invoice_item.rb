@@ -32,8 +32,15 @@ def self.incomplete_invoices
     sprintf("$%d.%02d", dollars, cents)
   end  
 
-  # def discount_available
-  #   bulk_discounts.where("bulk_discounts.threshold <= ?", quantity).order(percentage: :desc).first
-  # end
+  def find_discount(invoice_item_id, merchant_id)
+    bulk_discounts = BulkDiscount.where(merchant_id: merchant_id).order(:threshold)
+    discount = nil
+    bulk_discounts.each do |bulk_discount|
+      if quantity >= bulk_discount.threshold 
+        discount = bulk_discount
+      end
+    end
+    discount
+  end
 end
   
