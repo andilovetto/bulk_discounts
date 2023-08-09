@@ -176,6 +176,23 @@ RSpec.describe "merchant invoice show page", :vcr do
         expect(page).to have_content("Total Discounted Revenue: $351.00")
       end
 
+      it "displays a link to bulk discount's show page next to each invoice item that qualifies for discount" do
+        merchant = FactoryBot.create(:merchant)
+        customer = FactoryBot.create(:customer)
+        invoice = FactoryBot.create(:invoice, customer: customer)
+        item = FactoryBot.create(:item, merchant: merchant)
+        item_3 = FactoryBot.create(:item, merchant: merchant)
+        invoice_item = FactoryBot.create(:invoice_item, item: item, invoice: invoice, status: "packaged", quantity: 10, unit_price: 10)
+        invoice_item_3 = FactoryBot.create(:invoice_item, item: item_3, invoice: invoice, status: "packaged", quantity: 5, unit_price: 10)
+        bulk_discount_1 = merchant.bulk_discounts.create!(percentage: 20, threshold: 10)
+        bulk_discount_11 = merchant.bulk_discounts.create!(percentage: 20, threshold: 12)
+
+        visit merchant_invoice_path(merchant, invoice)
+
+        expect(page).to have_button("Applied Discount", count: 1)
+        click_button "Applied Discount"
+        expect(current_path).to eq(merchant_bulk_discount_path(merchant, bulk_discount_1))      
+      end
     end
   end
 end

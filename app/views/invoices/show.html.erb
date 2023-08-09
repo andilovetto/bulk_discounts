@@ -16,6 +16,9 @@
 <h4>Items on Invoice:</h4>
   <% @invoice.invoice_items.each do |invoice_item| %>
     <p>Item Name: <%= invoice_item.item.name %></p>
+    <% if @invoice.discounted_invoice_items.include?(invoice_item) && @invoice.discounted_revenue != 0 %>
+      <p><%= button_to "Applied Discount",  merchant_bulk_discount_path(@merchant, invoice_item.find_discount(invoice_item.id, @merchant.id)), method: :get %> </p>
+    <% end %>
     <p>Quantity: <%= invoice_item.quantity %></p>
     <p>Unit Price: <%= invoice_item.format_price %></p>
     <p>Status: <%= invoice_item.status %>

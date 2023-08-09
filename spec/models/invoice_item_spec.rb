@@ -47,6 +47,25 @@ RSpec.describe InvoiceItem, type: :model do
         formatted_price = invoice_item.format_price
 
         expect(formatted_price).to eq("$902.10")
+      end 
+    end
+
+    describe "#find_discount" do
+      it "finds discount applicable" do
+        merchant_10 = Merchant.create!(name: "andi")
+        merchant_11 = Merchant.create!(name: "seth")
+        customer = FactoryBot.create(:customer)
+        invoice = FactoryBot.create(:invoice, customer: customer)
+        item = FactoryBot.create(:item, merchant: merchant_10)
+        item_3 = FactoryBot.create(:item, merchant: merchant_10)
+        item_13 = FactoryBot.create(:item, merchant: merchant_11)
+        invoice_item = FactoryBot.create(:invoice_item, item: item, invoice: invoice, status: "packaged", quantity: 12, unit_price: 10)
+        invoice_item_13 = FactoryBot.create(:invoice_item, item: item_13, invoice: invoice, status: "packaged", quantity: 15, unit_price: 10)
+        bulk_discount_1 = merchant_10.bulk_discounts.create!(percentage: 20, threshold: 10)
+        bulk_discount_2 = merchant_11.bulk_discounts.create!(percentage: 30, threshold: 15)
+
+        expect(invoice_item.find_discount(invoice_item.id, merchant_10.id)).to eq(bulk_discount_1)
+        expect(invoice_item_13.find_discount(invoice_item_13.id, merchant_11.id)).to eq(bulk_discount_2)
       end
     end
   end
