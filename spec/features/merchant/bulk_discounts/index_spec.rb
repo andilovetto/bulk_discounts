@@ -59,4 +59,12 @@ RSpec.describe "merchant's bulk discount index" do
       expect(page).to_not have_content("Discount Percentage: #{@bulk_discount_1.percentage}")
       expect(page).to_not have_content("Discount Threshold: #{@bulk_discount_1.threshold}")
   end
+
+  it "displays the next 3 upcoming holidays" do
+    within(".upcoming_holidays") do
+      expect(page).to have_content("Labor Day")
+      expect(page).to have_content("Columbus Day")
+      expect(page).to have_content("Veterans Day")
+    end
+  end
 end
