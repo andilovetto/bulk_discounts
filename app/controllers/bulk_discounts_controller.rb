@@ -5,6 +5,7 @@ class BulkDiscountsController < ApplicationController
 
   
   def index
+    @holidays = HolidayFacade.get_upcoming_holidays
   end
 
   def show
