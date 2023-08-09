@@ -1,7 +1,8 @@
 class InvoicesController < ApplicationController
   def index
-    @invoice_items = InvoiceItem.all
     @merchant = Merchant.find(params[:merchant_id])
+    # require 'pry'; binding.pry
+    @invoices = @merchant.invoices.distinct
   end
   
   def show

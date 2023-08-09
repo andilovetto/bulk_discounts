@@ -1,7 +1,7 @@
 <h1>My Invoices</h1>
 
 <div id="my-invoices">
-  <p><% @invoice_items.each do |invoice_item| %></p>
-    <p>Invoice #<%= link_to invoice_item.id, merchant_invoice_path(@merchant, invoice_item.invoice) %></p>
+  <p><% @invoices.each do |invoice| %></p>
+    <p>Invoice #<%= link_to invoice.id, merchant_invoice_path(@merchant, invoice) %></p>
   <% end %>
 </div>
